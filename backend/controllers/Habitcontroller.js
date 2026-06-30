@@ -24,7 +24,8 @@ const addHabits = async(req,res)=>{
             habit:habit
         })  
         await newHabit.save()
-        return res.status(201).json({message:"habit saved successfully"})
+        const habits = await Habits.find()
+        return res.status(201).json({message:"habit saved successfully",habits})
 
     }catch(error){
         console.log(error)

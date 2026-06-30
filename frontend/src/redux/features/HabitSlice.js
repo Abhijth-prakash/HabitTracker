@@ -15,6 +15,19 @@ export const getHabits = createAsyncThunk(
     }
 )
 
+export const addHabits = createAsyncThunk(
+    'addhabits',
+    async (habit)=>{
+        try{
+            const response = await axios.post('http://localhost:8888/habits',habit)
+            console.log(response.data)
+            return response.data
+        }catch(error){
+            console.log(error)
+        }
+    }
+)
+
 const HabitSlice = createSlice({
     name:"taskslice",
     initialState:{
@@ -33,6 +46,17 @@ const HabitSlice = createSlice({
             state.loading = false
         })
         .addCase(getHabits.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.error.message
+        })
+        .addCase(addHabits.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(addHabits.fulfilled,(state,action)=>{
+            state.data = action.payload
+            state.loading = false
+        })
+        .addCase(addHabits.rejected,(state,action)=>{
             state.loading = false
             state.error = action.error.message
         })
