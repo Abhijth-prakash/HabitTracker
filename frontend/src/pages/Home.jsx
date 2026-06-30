@@ -1,16 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { addHabits, getHabits } from '../redux/features/HabitSlice'
+import { addHabits } from '../redux/features/HabitSlice'
 import { useForm } from 'react-hook-form'
+import HabitCard from '../components/HabitCard'
 
 const Home = () => {
-  const dispatch = useDispatch()
-
-
-      useEffect(()=>{
-      dispatch(getHabits())
-    },[])
-
+  const dispatch = useDispatch
   const {register,handleSubmit,formState} = useForm()
   
 const dataHandle = async (data) => {
@@ -23,12 +18,14 @@ const dataHandle = async (data) => {
 };
 
 
-  return (
+  return (<>
 
     <form onSubmit={handleSubmit(dataHandle)}>
         <input type="text" {...register('habit')} placeholder='typesomething' />
         <button>+</button>
     </form>
+    <HabitCard></HabitCard>
+    </>
   )
 }
 
