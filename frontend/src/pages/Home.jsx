@@ -5,13 +5,13 @@ import { useForm } from 'react-hook-form'
 import HabitCard from '../components/HabitCard'
 
 const Home = () => {
-  const dispatch = useDispatch
+  const dispatch = useDispatch()
   const {register,handleSubmit,formState} = useForm()
   
 const dataHandle = async (data) => {
   try {
-    const response = await dispatch(addHabits(data)).unwrap();
-    console.log("Success", response);
+    const response = await dispatch(addHabits(data));
+    console.log("Success");
   } catch (error) {
     console.log("Failed", error);
   }

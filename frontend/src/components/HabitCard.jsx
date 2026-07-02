@@ -14,7 +14,8 @@ const HabitCard = () => {
 
      const listItems = habits && habits.map(item=> <li key={item._id}> 
         <span>{item.habit}</span>
-        <button>done</button>
+        <button >done</button>
+        <button>edit</button>
         <button>delete</button>
     
                                 </li>) 
