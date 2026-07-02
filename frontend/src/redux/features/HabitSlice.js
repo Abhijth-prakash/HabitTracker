@@ -26,6 +26,19 @@ export const addHabits = createAsyncThunk(
     }
 )
 
+export const deleteHabits = createAsyncThunk(
+    'deleteHabits',
+    async (id)=>{
+        try{
+            const response = await axios.delete('http://localhost:8888/habits')
+            return response.data
+
+        }catch(error){
+            console.log(error)
+        }
+    }
+)
+
 const HabitSlice = createSlice({
     name:"taskslice",
     initialState:{
@@ -51,6 +64,19 @@ const HabitSlice = createSlice({
             state.loading = true
         })
         .addCase(addHabits.fulfilled,(state,action)=>{
+            state.habits = action.payload.habits
+            state.loading = false
+        })
+        .addCase(addHabits.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.error.message
+        })
+        .addCase(deleteHabits.pending,(state)=>{
+            state.loading = true
+            const {id} = action.meta.arg
+            state.habits = state.habits.filter(item=>{item._id !== id})
+        })
+        .addCase(deleteHabits.fulfilled,(state,action)=>{
             state.habits = action.payload.habits
             state.loading = false
         })
