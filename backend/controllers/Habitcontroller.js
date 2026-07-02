@@ -1,4 +1,3 @@
-
 const Habits = require('../models/HabitModel')
 
 
@@ -33,7 +32,32 @@ const addHabits = async(req,res)=>{
     }
 }
 
+
+//deleting habits
+const deleteHabits = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!id) {
+            return res.status(404).json({ message: "habit not found" });
+        }
+
+        const deletedHabit = await Habits.findByIdAndDelete(id);
+
+        if (!deletedHabit) {
+            return res.status(404).json({ message: "habit not found" });
+        }
+
+        return res.status(200).json({ message: "habit deleted" });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "server error" });
+    }
+}
+
+
 module.exports={
     getHabits,
-    addHabits
+    addHabits,
+    deleteHabits
 }
