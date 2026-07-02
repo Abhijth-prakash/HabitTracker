@@ -9,11 +9,11 @@ const HabitCard = () => {
           useEffect(()=>{
           dispatch(getHabits())
         
-        },[])
+        },[dispatch])
     const [remove,setRemove] = useState(false)
     const [id,setId] = useState(null)
     const {habits} = useSelector(state=> state.data)
-
+     if (!habits?.length) return <p>No habits yet. Add one!</p>
      const listItems = habits && habits.map(item=> <li key={item._id}> 
         <span>{item.habit}</span>
         <button >done</button>

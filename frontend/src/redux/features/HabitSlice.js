@@ -28,13 +28,14 @@ export const addHabits = createAsyncThunk(
 
 export const deleteHabits = createAsyncThunk(
     'deleteHabits',
-    async (id)=>{
-        try{
-            const response = await axios.delete('http://localhost:8888/habits')
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await axios.delete(`http://localhost:8888/habits/${id}`)
             return response.data
 
-        }catch(error){
+        } catch (error) {
             console.log(error)
+            return rejectWithValue(error.response?.data || error.message)
         }
     }
 )
@@ -44,7 +45,8 @@ const HabitSlice = createSlice({
     initialState:{
         habits:[],
         loading:false,
-        error:null
+        error:null,
+        previousState: []
     },
     reducers:{},
     extraReducers:(build)=>{
@@ -71,19 +73,23 @@ const HabitSlice = createSlice({
             state.loading = false
             state.error = action.error.message
         })
-        .addCase(deleteHabits.pending,(state)=>{
-            state.loading = true
-            const {id} = action.meta.arg
-            state.habits = state.habits.filter(item=>{item._id !== id})
-        })
-        .addCase(deleteHabits.fulfilled,(state,action)=>{
-            state.habits = action.payload.habits
-            state.loading = false
-        })
-        .addCase(addHabits.rejected,(state,action)=>{
-            state.loading = false
-            state.error = action.error.message
-        })
+     .addCase(deleteHabits.pending, (state, action) => {
+    state.loading = true
+    state.previousState = state.habits
+    const { id } = action.meta.arg
+    state.habits = state.habits.filter(item => item._id !== id)
+})
+      .addCase(deleteHabits.fulfilled, (state,action) => {
+    state.habits = action.payload   
+    state.loading = false
+    state.previousState = null
+})
+.addCase(deleteHabits.rejected, (state, action) => {
+    state.habits = state.previousState
+    state.previousState = null
+    state.loading = false
+    state.error = action.error.message
+})
     }
 }
 )

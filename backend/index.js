@@ -15,7 +15,7 @@ app.use(cors({
 
 app.get('/habits',habitController.getHabits)
 app.post('/habits',habitController.addHabits)
-app.delete('/habits',habitController.deleteHabits)
+app.delete('/habits/:id',habitController.deleteHabits)
 
 
 app.listen(8888, () => {

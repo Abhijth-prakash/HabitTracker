@@ -36,7 +36,7 @@ const addHabits = async(req,res)=>{
 //deleting habits
 const deleteHabits = async (req, res) => {
     try {
-        const { id } = req.params;
+        const {id}  = req.params
         if (!id) {
             return res.status(404).json({ message: "habit not found" });
         }
@@ -47,7 +47,8 @@ const deleteHabits = async (req, res) => {
             return res.status(404).json({ message: "habit not found" });
         }
 
-        return res.status(200).json({ message: "habit deleted" });
+        const habits = await Habits.find()
+        return res.status(200).json({ message: "habit deleted",habits });
 
     } catch (error) {
         console.log(error);
