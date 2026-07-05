@@ -72,7 +72,7 @@ const updateHabits = async (req, res) => {
         }
 
         const update = await Habits.findByIdAndUpdate(id,{$set:{habit:habit}})
-         if (!updated) {
+         if (!update) {
             return res.status(404).json({ message: "habit not found" });
         }
         const habits = await Habits.find()

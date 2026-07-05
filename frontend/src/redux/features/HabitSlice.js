@@ -95,7 +95,7 @@ const HabitSlice = createSlice({
     state.habits = state.habits.filter(item => item._id !== id)
 })
       .addCase(deleteHabits.fulfilled, (state,action) => {
-    state.habits = action.payload   
+    state.habits = action.payload.habits
     state.loading = false
     state.previousState = null
 })
@@ -109,7 +109,7 @@ const HabitSlice = createSlice({
     state.loading = true
 })
       .addCase(updateHabits.fulfilled, (state,action) => {
-    state.habits = action.payload   
+    state.habits = action.payload.habits
     state.loading = false
 })
 .addCase(updateHabits.rejected, (state, action) => {
