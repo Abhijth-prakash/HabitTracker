@@ -40,6 +40,21 @@ export const deleteHabits = createAsyncThunk(
     }
 )
 
+
+export const updateHabits = createAsyncThunk(
+    'updateHabits',
+    async ({id,habit}, { rejectWithValue }) => {
+        try {
+            const response = await axios.patch(`http://localhost:8888/habits/${id}`,{habit})
+            return response.data
+
+        } catch (error) {
+            console.log(error)
+            return rejectWithValue(error.response?.data || error.message)
+        }
+    }
+)
+
 const HabitSlice = createSlice({
     name:"taskslice",
     initialState:{
@@ -90,9 +105,21 @@ const HabitSlice = createSlice({
     state.loading = false
     state.error = action.error.message
 })
+     .addCase(updateHabits.pending, (state, action) => {
+    state.loading = true
+})
+      .addCase(updateHabits.fulfilled, (state,action) => {
+    state.habits = action.payload   
+    state.loading = false
+})
+.addCase(updateHabits.rejected, (state, action) => {
+    state.loading = false
+    state.error = action.error.message
+})
+
+
     }
-}
-)
+})
 
 
 export default HabitSlice.reducer
