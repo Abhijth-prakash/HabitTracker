@@ -57,8 +57,37 @@ const deleteHabits = async (req, res) => {
 }
 
 
+
+
+//updating habits
+const updateHabits = async (req, res) => {
+    try {
+        const {id}  = req.params
+        const {habit} = req.body
+        if (!id) {
+            return res.status(404).json({ message: "habit not found" });
+        }
+        if (!habit) {
+            return res.status(404).json({ message: "habit not found" });
+        }
+
+        const update = await Habits.findByIdAndUpdate(id,{$set:{habit:habit}})
+         if (!updated) {
+            return res.status(404).json({ message: "habit not found" });
+        }
+        const habits = await Habits.find()
+        return res.status(200).json({message:"update completed",habits})
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "server error" });
+    }
+}
+
+
 module.exports={
     getHabits,
     addHabits,
-    deleteHabits
+    deleteHabits,
+    updateHabits
 }
