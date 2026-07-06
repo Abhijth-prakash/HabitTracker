@@ -84,10 +84,36 @@ const updateHabits = async (req, res) => {
     }
 }
 
+//updating completed
+const completed = async (req, res) => {
+    try {
+        const {id}  = req.params
+        const {completed} = req.body
+        if (!id) {
+            return res.status(404).json({ message: "habit not found" });
+        }
+        if (!completed|| completed == false) {
+            return res.status(404).json({ message: "habit not found" });
+        }
+
+        const update = await Habits.findByIdAndUpdate(id,{$set:{completed:true}})
+         if (!update) {
+            return res.status(404).json({ message: "habit not found" });
+        }
+        const habits = await Habits.find()
+        return res.status(200).json({message:"update completed",habits})
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "server error" });
+    }
+}
+
 
 module.exports={
     getHabits,
     addHabits,
     deleteHabits,
-    updateHabits
+    updateHabits,
+    completed
 }

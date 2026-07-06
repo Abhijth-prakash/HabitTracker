@@ -17,6 +17,7 @@ app.get('/habits',habitController.getHabits)
 app.post('/habits',habitController.addHabits)
 app.delete('/habits/:id',habitController.deleteHabits)
 app.patch('/habits/:id',habitController.updateHabits)
+app.patch('/habits/done/:id',habitController.completed)
 
 
 app.listen(8888, () => {
