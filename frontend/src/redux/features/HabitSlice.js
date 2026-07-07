@@ -55,6 +55,21 @@ export const updateHabits = createAsyncThunk(
     }
 )
 
+
+export const completedHabits = createAsyncThunk(
+    'CompletedHabits',
+    async ({id,completed}, { rejectWithValue }) => {
+        try {
+            const response = await axios.patch(`http://localhost:8888/habits/${id}`,{completed})
+            return response.data
+
+        } catch (error) {
+            console.log(error)
+            return rejectWithValue(error.response?.data || error.message)
+        }
+    }
+)
+
 const HabitSlice = createSlice({
     name:"taskslice",
     initialState:{
@@ -113,6 +128,17 @@ const HabitSlice = createSlice({
     state.loading = false
 })
 .addCase(updateHabits.rejected, (state, action) => {
+    state.loading = false
+    state.error = action.error.message
+})
+     .addCase(completedHabits.pending, (state, action) => {
+    state.loading = true
+})
+      .addCase(completedHabits.fulfilled, (state,action) => {
+    state.habits = action.payload.habits
+    state.loading = false
+})
+.addCase(completedHabits.rejected, (state, action) => {
     state.loading = false
     state.error = action.error.message
 })
