@@ -87,21 +87,23 @@ const updateHabits = async (req, res) => {
 //updating completed
 const completed = async (req, res) => {
     try {
-        const {id}  = req.params
-        const {completed} = req.body
+        const { id } = req.params
+        const { completed } = req.body
+
         if (!id) {
-            return res.status(404).json({ message: "habit not found" });
+            return res.status(400).json({ message: "id is required" });
         }
-        if (!completed|| completed == false) {
+        if (typeof completed !== "boolean") {
+            return res.status(400).json({ message: "completed must be a boolean" });
+        }
+
+        const update = await Habits.findByIdAndUpdate(id, { $set: { completed } })
+        if (!update) {
             return res.status(404).json({ message: "habit not found" });
         }
 
-        const update = await Habits.findByIdAndUpdate(id,{$set:{completed:true}})
-         if (!update) {
-            return res.status(404).json({ message: "habit not found" });
-        }
         const habits = await Habits.find()
-        return res.status(200).json({message:"update completed",habits})
+        return res.status(200).json({ message: "update completed", habits })
 
     } catch (error) {
         console.log(error);

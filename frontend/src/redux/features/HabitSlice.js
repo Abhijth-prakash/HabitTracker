@@ -60,7 +60,7 @@ export const completedHabits = createAsyncThunk(
     'CompletedHabits',
     async ({id,completed}, { rejectWithValue }) => {
         try {
-            const response = await axios.patch(`http://localhost:8888/habits/${id}`,{completed})
+            const response = await axios.patch(`http://localhost:8888/habits/done/${id}`,{completed})
             return response.data
 
         } catch (error) {
@@ -132,14 +132,19 @@ const HabitSlice = createSlice({
     state.error = action.error.message
 })
      .addCase(completedHabits.pending, (state, action) => {
-    state.loading = true
+        state.previousState = state.habits
+        const {id} = action.meta.arg
+        state.habits = state.habits.map(item=> item._id == id ? {...item,completed:true} :item)
+        state.loading = true
 })
       .addCase(completedHabits.fulfilled, (state,action) => {
     state.habits = action.payload.habits
+    state.previousState = null
     state.loading = false
 })
 .addCase(completedHabits.rejected, (state, action) => {
     state.loading = false
+    state.habits = state.previousState
     state.error = action.error.message
 })
 
