@@ -1,5 +1,5 @@
 const Habits = require('../models/HabitModel')
-const Logs = require('../models/HabitLogs')
+const HabitLog = require('../models/HabitLogs')
 
 
 //getting data 
@@ -125,5 +125,5 @@ module.exports={
     addHabits,
     deleteHabits,
     updateHabits,
-    abitLogss
+    habitLogss
 }
