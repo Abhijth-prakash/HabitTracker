@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { completedHabits, getHabits } from '../redux/features/HabitSlice'
+import { getHabits } from '../redux/features/HabitSlice'
 import DeleteCard from './DeleteCard'
 import { Link } from 'react-router-dom'
 
@@ -31,12 +31,6 @@ const HabitCard = () => {
             <span className="text-gray-800 font-medium">{item.habit}</span>
 
             <div className="flex items-center gap-2">
-                <button
-                    onClick={() => dispatch(completedHabits({ id: item._id, completed: true }))}
-                    className="px-3 py-1.5 rounded-lg bg-green-500 text-white text-sm font-semibold hover:bg-green-600 transition-colors"
-                >
-                    Done
-                </button>
 
                 <Link to={`/habit/${item._id}`}>
                     <button className="px-3 py-1.5 rounded-lg bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors">
