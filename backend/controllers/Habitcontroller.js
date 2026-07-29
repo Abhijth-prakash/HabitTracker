@@ -1,4 +1,5 @@
 const Habits = require('../models/HabitModel')
+const Logs = require('../models/HabitLogs')
 
 
 //getting data 
@@ -85,6 +86,38 @@ const updateHabits = async (req, res) => {
 }
 
 
+//habitlogs
+
+const habitLogss = async (req, res) => {
+    try {
+        const { habitId } = req.body;
+
+        const today = new Date().toISOString().split("T")[0];
+
+        const existing = await HabitLog.findOne({
+  habitId,
+  date: today,
+});
+
+if (existing) {
+  return res.json({ message: "Already completed today" });
+}
+
+        const log = await HabitLog.create({
+            habitId,
+            date: today,
+            completed: true
+        });
+
+        return res.status(201).json(log);
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
 
 
 module.exports={
@@ -92,5 +125,5 @@ module.exports={
     addHabits,
     deleteHabits,
     updateHabits,
-    completed
+    abitLogss
 }

@@ -13,10 +13,15 @@ app.use(cors({
     origin: 'http://localhost:5173'
 }))
 
+//habits
 app.get('/habits',habitController.getHabits)
 app.post('/habits',habitController.addHabits)
 app.delete('/habits/:id',habitController.deleteHabits)
 app.patch('/habits/:id',habitController.updateHabits)
+
+
+//habitlogs
+app.post('/habits/logs',habitController.habitLogss)
 
 
 app.listen(8888, () => {
