@@ -41,6 +41,7 @@ export const deleteHabits = createAsyncThunk(
 )
 
 
+
 export const updateHabits = createAsyncThunk(
     'updateHabits',
     async ({id,habit}, { rejectWithValue }) => {
@@ -54,6 +55,24 @@ export const updateHabits = createAsyncThunk(
         }
     }
 )
+
+export const AddingLog = createAsyncThunk(
+  "creating logs",
+  async (id) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/habits/logs",
+        {
+          habitId: id,
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 
 

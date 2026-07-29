@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getHabits } from '../redux/features/HabitSlice'
+import { AddingLog, getHabits } from '../redux/features/HabitSlice'
 import DeleteCard from './DeleteCard'
 import { Link } from 'react-router-dom'
 
@@ -37,6 +37,8 @@ const HabitCard = () => {
                         Edit
                     </button>
                 </Link>
+
+                <button onClick={()=>{dispatch(AddingLog(item._id))}}>done </button>
 
                 <button
                     onClick={() => { setRemove(true); setId(item._id) }}
