@@ -118,6 +118,18 @@ if (existing) {
 };
 
 
+//getting logs for today
+
+const todayHabits = async(req,res)=>{
+        try{
+
+        }catch(error){
+            console.log(error)
+            return res.status(500).json({message:"internal server error"})
+        }
+}
+
+
 
 
 module.exports={
@@ -125,5 +137,6 @@ module.exports={
     addHabits,
     deleteHabits,
     updateHabits,
-    habitLogss
+    habitLogss,
+    todayHabits
 }
