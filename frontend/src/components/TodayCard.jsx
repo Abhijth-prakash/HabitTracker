@@ -8,10 +8,14 @@ const TodayCard = () => {
         dispatch(getLogs())
     },[])
 
-    const data = useSelector
+    const {logs} = useSelector(state=> state.data)
+    const listItems = logs&& logs.map(item=> <li key={item._id}>
+        <span>{item.habit}</span>
+        <span>{item.completed}</span>
+        </li>)
   return (
     <div>
-        <h1>hi</h1>
+        <ol>{listItems}</ol>
     </div>
   )
 }
