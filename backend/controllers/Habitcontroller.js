@@ -120,14 +120,38 @@ if (existing) {
 
 //getting logs for today
 
-const todayHabits = async(req,res)=>{
-        try{
+const todayHabits = async (req, res) => {
+  try {
+    const habits = await Habits.find();
+    const today = new Date().toISOString().split("T")[0];
 
-        }catch(error){
-            console.log(error)
-            return res.status(500).json({message:"internal server error"})
+    const todayLogs = await HabitLog.find({
+      date: today,
+    });
+
+    const result = [];
+
+    for (let i = 0; i < habits.length; i++) {
+      let completed = false;
+
+      for (let j = 0; j < todayLogs.length; j++) {
+        if (habits[i]._id.toString() === todayLogs[j].habitId.toString()) {
+          completed = true;
+          break;
         }
-}
+      }
+
+      result.push({
+        ...habits[i].toObject(),
+        completed: completed,
+      });
+    }
+    return res.status(200).json({ message: "success", result });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "internal server error" });
+  }
+}; 
 
 
 
