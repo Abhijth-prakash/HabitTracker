@@ -74,6 +74,20 @@ export const AddingLog = createAsyncThunk(
   }
 );
 
+export const getLogs = createAsyncThunk(
+    'getting logs',
+    async ()=>{
+        try{
+             const response = await axios.get("http://localhost:8888/habits/logs")
+            return response.data 
+
+        }catch(error){
+            console.log(error)
+        }
+       
+    }
+)
+
 
 
 
@@ -83,7 +97,8 @@ const HabitSlice = createSlice({
         habits:[],
         loading:false,
         error:null,
-        previousState: []
+        previousState: [],
+        logs:[]
     },
     reducers:{},
     extraReducers:(build)=>{
@@ -137,6 +152,16 @@ const HabitSlice = createSlice({
 .addCase(updateHabits.rejected, (state, action) => {
     state.loading = false
     state.error = action.error.message
+})
+
+.addCase(getLogs.pending,(state,action)=>{
+    state.loading = true
+})
+.addCase(getLogs.fulfilled,(state,action)=>{
+    state.logs = action.payload.result
+})
+.addCase(getLogs.rejected,(state,action)=>{
+    state.error = action.payload.message
 })
 
 

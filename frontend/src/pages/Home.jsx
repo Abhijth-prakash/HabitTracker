@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import HabitCard from '../components/HabitCard'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Schema from '../schema/HabitSchema'
+import TodayCard from '../components/TodayCard'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -55,6 +56,7 @@ const Home = () => {
         </form>
 
         <HabitCard />
+        <TodayCard></TodayCard>
       </div>
     </div>
   )

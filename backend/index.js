@@ -22,7 +22,7 @@ app.patch('/habits/:id',habitController.updateHabits)
 
 //habitlogs
 app.post('/habits/logs',habitController.habitLogss)
-app.get('/habits/today',habitController.todayHabits)
+app.get('/habits/logs',habitController.todayHabits)
 
 
 app.listen(8888, () => {
