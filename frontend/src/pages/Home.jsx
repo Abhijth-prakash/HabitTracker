@@ -1,65 +1,78 @@
-import { useDispatch } from 'react-redux'
-import { addHabits } from '../redux/features/HabitSlice'
-import { useForm } from 'react-hook-form'
-import HabitCard from '../components/HabitCard'
-import { zodResolver } from '@hookform/resolvers/zod'
-import Schema from '../schema/HabitSchema'
-import TodayCard from '../components/TodayCard'
+import { useDispatch } from "react-redux";
+import { addHabits } from "../redux/features/HabitSlice";
+import { useForm } from "react-hook-form";
+import HabitCard from "../components/HabitCard";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Schema from "../schema/HabitSchema";
+import TodayCard from "../components/TodayCard";
 
 const Home = () => {
-  const dispatch = useDispatch()
-  const { register, handleSubmit, formState, reset } = useForm({
-    resolver: zodResolver(Schema)
-  })
+  const dispatch = useDispatch();
 
-  const { errors } = formState
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: zodResolver(Schema),
+  });
 
   const dataHandle = async (data) => {
     try {
-      await dispatch(addHabits(data))
-      reset()
-      console.log("Success")
+      await dispatch(addHabits(data));
+      reset();
     } catch (error) {
-      console.log("Failed", error)
+      console.log(error);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+    <div className="min-h-screen bg-slate-100 py-10 px-6">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-center mb-8 text-slate-800">
           Habit Tracker
         </h1>
 
         <form
           onSubmit={handleSubmit(dataHandle)}
-          className="flex items-start gap-3 bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6"
+          className="bg-white shadow-lg rounded-2xl p-5 flex gap-4 mb-8"
         >
           <div className="flex-1">
             <input
+              {...register("habit")}
               type="text"
-              {...register('habit')}
-              placeholder="Type something..."
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+              placeholder="Enter a habit..."
+              className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors?.habit?.message && (
-              <p className="text-red-500 text-sm mt-1 ml-1">{errors.habit.message}</p>
+
+            {errors?.habit && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.habit.message}
+              </p>
             )}
           </div>
 
           <button
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 rounded-lg font-semibold transition"
             type="submit"
-            className="px-5 py-2 rounded-lg bg-blue-500 text-white font-bold text-lg hover:bg-blue-600 transition-colors"
           >
-            +
+            Add
           </button>
         </form>
 
-        <HabitCard />
-        <TodayCard></TodayCard>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <HabitCard />
+          </div>
+
+          <div>
+            <TodayCard />
+          </div>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
