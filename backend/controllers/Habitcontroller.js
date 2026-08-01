@@ -154,6 +154,62 @@ const todayHabits = async (req, res) => {
 }; 
 
 
+const weekHabits = async (req, res) => {
+  try {
+    const today = new Date();
+
+    const dates = [];
+
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+
+      dates.push(date.toISOString().split("T")[0]);
+    }
+
+    const habits = await Habits.find();
+
+    const logs = await HabitLog.find({
+      date: { $in: dates }
+    });
+
+    // Create lookup
+    const logMap = {};
+
+    logs.forEach((log) => {
+      const key = `${log.habitId}_${log.date}`;
+      logMap[key] = log.completed;
+    });
+
+    const weeklyReport = habits.map((habit) => {
+
+      const week = dates.map((date) => {
+        const key = `${habit._id}_${date}`;
+
+        return logMap[key] || false;
+      });
+
+      const completed = week.filter(Boolean).length;
+
+      return {
+        habitId: habit._id,
+        habit: habit.habit,
+        week,
+        percentage: Math.round((completed / 7) * 100)
+      };
+    });
+
+    return res.json({
+      dates,
+      weeklyReport
+    });
+
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 
 
 module.exports={
@@ -164,4 +220,5 @@ module.exports={
     habitLogss,
     todayHabits,
     weekHabits
+    
 }
