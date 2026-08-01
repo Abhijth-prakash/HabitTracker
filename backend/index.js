@@ -23,6 +23,7 @@ app.patch('/habits/:id',habitController.updateHabits)
 //habitlogs
 app.post('/habits/logs',habitController.habitLogss)
 app.get('/habits/logs',habitController.todayHabits)
+app.get('./habits/weeklogs',habitController.weekHabits)
 
 
 app.listen(8888, () => {

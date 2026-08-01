@@ -162,5 +162,6 @@ module.exports={
     deleteHabits,
     updateHabits,
     habitLogss,
-    todayHabits
+    todayHabits,
+    weekHabits
 }
