@@ -4,6 +4,7 @@ import {
   AddingLog,
   getHabits,
   getLogs,
+  getWeeklogs,
 } from "../redux/features/HabitSlice";
 import DeleteCard from "./DeleteCard";
 import { Link } from "react-router-dom";
@@ -26,8 +27,9 @@ const HabitCard = () => {
       await dispatch(AddingLog(id));
 
       // Refresh the data
-      dispatch(getHabits());
-      dispatch(getLogs());
+      await dispatch(getHabits());
+      await dispatch(getLogs());
+      await dispatch(getWeeklogs());
     } catch (error) {
       console.log(error);
     }
@@ -36,9 +38,7 @@ const HabitCard = () => {
   if (!habits?.length) {
     return (
       <div className="bg-white rounded-2xl shadow-lg p-10 text-center">
-        <p className="text-gray-500 text-lg">
-          No habits yet. Add one!
-        </p>
+        <p className="text-gray-500 text-lg">No habits yet. Add one!</p>
       </div>
     );
   }
@@ -47,9 +47,7 @@ const HabitCard = () => {
     <div className="bg-white rounded-2xl shadow-lg p-6">
       {remove && <DeleteCard setRemove={setRemove} id={id} />}
 
-      <h2 className="text-2xl font-bold mb-6 text-slate-800">
-        All Habits
-      </h2>
+      <h2 className="text-2xl font-bold mb-6 text-slate-800">All Habits</h2>
 
       <ol className="space-y-4">
         {habits.map((item) => (

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { addHabits } from "../redux/features/HabitSlice";
+import { addHabits, getLogs, getWeeklogs } from "../redux/features/HabitSlice";
 import { useForm } from "react-hook-form";
 import HabitCard from "../components/HabitCard";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +22,8 @@ const Home = () => {
   const dataHandle = async (data) => {
     try {
       await dispatch(addHabits(data));
+      await dispatch(getWeeklogs());  
+      await dispatch(getLogs());  
       reset();
     } catch (error) {
       console.log(error);

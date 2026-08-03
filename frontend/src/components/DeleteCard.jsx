@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { deleteHabits, getHabits, getLogs } from "../redux/features/HabitSlice";
+import { deleteHabits, getHabits, getLogs, getWeeklogs } from "../redux/features/HabitSlice";
 
 const DeleteCard = ({ setRemove, id }) => {
   const dispatch = useDispatch();
@@ -8,8 +8,9 @@ const DeleteCard = ({ setRemove, id }) => {
     const result = await dispatch(deleteHabits(id));
 
     if (!result.error) {
-      dispatch(getHabits());
-      dispatch(getLogs());
+      await dispatch(getHabits());
+      await dispatch(getLogs());
+      await dispatch(getWeeklogs())
 
       setRemove(false);
     }
