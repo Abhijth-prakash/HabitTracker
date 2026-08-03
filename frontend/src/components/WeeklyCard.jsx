@@ -9,11 +9,16 @@ const WeeklyCard = () => {
         dispatch(getWeeklogs())
     },[dispatch])
 
-    const {weeklogs,weekdates} = useSelector(state=> state.data) 
-    
+    const {weeklogs} = useSelector(state=> state.data) 
+        const listItems = weeklogs && weeklogs.map(habit=> <li key={habit.habitId}> 
+        <span>{habit.habit}</span>   
+        <span>{habit.percentage}</span>   
+     </li>)
+
+
   return (
     <div>
-        <h1>weeklogs</h1>
+        <h1>{listItems}</h1>
       
     </div>
   )
