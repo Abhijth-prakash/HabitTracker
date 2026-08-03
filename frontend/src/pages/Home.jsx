@@ -5,6 +5,7 @@ import HabitCard from "../components/HabitCard";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Schema from "../schema/HabitSchema";
 import TodayCard from "../components/TodayCard";
+import WeeklyCard from "../components/WeeklyCard";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -68,6 +69,9 @@ const Home = () => {
 
           <div>
             <TodayCard />
+          </div>
+          <div>
+            <WeeklyCard></WeeklyCard>
           </div>
         </div>
       </div>
