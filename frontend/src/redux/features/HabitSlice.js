@@ -68,14 +68,14 @@ export const getLogs = createAsyncThunk("getting logs", async () => {
   }
 });
 
-export const getWeeklogs = createAsyncThunk('getting week logs', async ()=>{
-    try{
-        const response = await axios.get('http://localhost:8888/habits/weeklogs');
-        return response.data;
-    }catch(error){
-        console.log(error)
-    }
-})
+export const getWeeklogs = createAsyncThunk("getting week logs", async () => {
+  try {
+    const response = await axios.get("http://localhost:8888/habits/weeklogs");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 const HabitSlice = createSlice({
   name: "taskslice",
@@ -85,8 +85,8 @@ const HabitSlice = createSlice({
     error: null,
     previousState: [],
     logs: [],
-    weeklogs : [],
-    weekdates: []
+    weeklogs: [],
+    weekdates: [],
   },
   reducers: {},
   extraReducers: (build) => {
@@ -151,17 +151,16 @@ const HabitSlice = createSlice({
       .addCase(getLogs.rejected, (state, action) => {
         state.error = action.error.message;
       })
-      .addCase(getWeeklogs.pending,(state,action)=>{
-        state.loading = true
+      .addCase(getWeeklogs.pending, (state, action) => {
+        state.loading = true;
       })
-      .addCase(getWeeklogs.fulfilled,(state,action)=>{
-            // state.weeklogs = action.payload.
-            console.log(action.payload)
+      .addCase(getWeeklogs.fulfilled, (state, action) => {
+        state.weekdates = action.payload.weekdates;
+        state.weeklogs = action.payload.weeklyReport;
       })
-      .addCase(getWeeklogs.rejected,(state,action)=>{
-        state.error = action.error.message
-      })
-      
+      .addCase(getWeeklogs.rejected, (state, action) => {
+        state.error = action.error.message;
+      });
   },
 });
 
