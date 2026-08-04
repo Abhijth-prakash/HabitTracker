@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Schema from "../schema/HabitSchema";
 import TodayCard from "../components/TodayCard";
 import WeeklyCard from "../components/WeeklyCard";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -75,6 +76,8 @@ const Home = () => {
           <div>
             <WeeklyCard></WeeklyCard>
           </div>
+
+          <Link to={'/habit/weeklyreport'}>weeklyreport</Link>
         </div>
       </div>
     </div>
