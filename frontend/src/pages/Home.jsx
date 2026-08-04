@@ -77,7 +77,12 @@ const Home = () => {
             <WeeklyCard></WeeklyCard>
           </div>
 
-          <Link to={'/habit/weeklyreport'}>weeklyreport</Link>
+        <Link
+  to="/habit/weeklyreport"
+  className="inline-flex items-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 text-white font-semibold shadow-lg transition duration-300 hover:scale-105 hover:shadow-xl"
+>
+  📊 Weekly Report
+</Link>
         </div>
       </div>
     </div>
