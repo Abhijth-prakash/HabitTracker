@@ -155,7 +155,7 @@ const HabitSlice = createSlice({
         state.loading = true;
       })
       .addCase(getWeeklogs.fulfilled, (state, action) => {
-        state.weekdates = action.payload.weekdates;
+        state.weekdates = action.payload.dates;
         state.weeklogs = action.payload.weeklyReport;
       })
       .addCase(getWeeklogs.rejected, (state, action) => {
