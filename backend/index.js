@@ -3,6 +3,7 @@ const app = express()
 const db = require('./config/db')
 const Habits = require('./models/HabitModel')
 const habitController = require('./controllers/Habitcontroller')
+const userController = require('./controllers/Usercontroller')
 const cors = require('cors')
 
 db.connect()
@@ -24,6 +25,9 @@ app.patch('/habits/:id',habitController.updateHabits)
 app.post('/habits/logs',habitController.habitLogss)
 app.get('/habits/logs',habitController.todayHabits)
 app.get('/habits/weeklogs',habitController.weekHabits)
+
+//users
+app.post('/user/registration',userController.register)
 
 
 app.listen(8888, () => {
