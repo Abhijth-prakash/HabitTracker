@@ -3,6 +3,7 @@ import './App.css'
 import Home from './pages/Home'
 import Edit from './pages/Edit'
 import Week from './pages/Week'
+import Register from './pages/Register'
 
 function App() {
 
@@ -16,6 +17,10 @@ function App() {
         <Route path='/' element={<Home></Home>}></Route>
         <Route path='/habit/:id' element={<Edit></Edit>}></Route>
         <Route path='/habit/weeklyreport' element={<Week></Week>}></Route>
+
+
+        <Route path='/user/registration' element={<Register></Register>}></Route>
+        
       </Routes>
     </div>
   )

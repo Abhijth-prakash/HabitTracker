@@ -101,6 +101,8 @@ const Home = () => {
             <WeeklyCard />
           </div>
         </div>
+
+        <Link></Link>
       </div>
     </div>
   );
