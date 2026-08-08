@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addHabits, getLogs, getWeeklogs } from "../redux/features/HabitSlice";
 import { useForm } from "react-hook-form";
 import HabitCard from "../components/HabitCard";
@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
-
+  const {user} = useSelector(state=> state.userData)
   const {
     register,
     handleSubmit,
@@ -48,6 +48,9 @@ const Home = () => {
               Build consistency, track daily progress, and analyze weekly performance.
             </p>
           </div>
+        </div>
+        <div>
+          <h1>{user&& user.name}</h1>
         </div>
 
         {/* Command Bar: Add Habit Form */}

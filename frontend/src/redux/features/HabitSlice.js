@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from "../../api/axios"; 
 
 export const getHabits = createAsyncThunk("gethabits", async () => {
   try {
-    const response = await axios.get("http://localhost:8888/habits");
+    const response = await api.get("/habits");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -12,7 +12,7 @@ export const getHabits = createAsyncThunk("gethabits", async () => {
 
 export const addHabits = createAsyncThunk("addhabits", async (habit) => {
   try {
-    const response = await axios.post("http://localhost:8888/habits", habit);
+    const response = await api.post("/habits", habit);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -23,7 +23,7 @@ export const deleteHabits = createAsyncThunk(
   "deleteHabits",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`http://localhost:8888/habits/${id}`);
+      const response = await api.delete(`/habits/${id}`);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -36,7 +36,7 @@ export const updateHabits = createAsyncThunk(
   "updateHabits",
   async ({ id, habit }, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`http://localhost:8888/habits/${id}`, {
+      const response = await api.patch(`/habits/${id}`, {
         habit,
       });
       return response.data;
@@ -49,7 +49,7 @@ export const updateHabits = createAsyncThunk(
 
 export const AddingLog = createAsyncThunk("creating logs", async (id) => {
   try {
-    const response = await axios.post("http://localhost:8888/habits/logs", {
+    const response = await api.post("/habits/logs", {
       habitId: id,
     });
 
@@ -61,7 +61,7 @@ export const AddingLog = createAsyncThunk("creating logs", async (id) => {
 
 export const getLogs = createAsyncThunk("getting logs", async () => {
   try {
-    const response = await axios.get("http://localhost:8888/habits/logs");
+    const response = await api.get("/habits/logs");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -70,7 +70,7 @@ export const getLogs = createAsyncThunk("getting logs", async () => {
 
 export const getWeeklogs = createAsyncThunk("getting week logs", async () => {
   try {
-    const response = await axios.get("http://localhost:8888/habits/weeklogs");
+    const response = await api.get("/habits/weeklogs");
     return response.data;
   } catch (error) {
     console.log(error);

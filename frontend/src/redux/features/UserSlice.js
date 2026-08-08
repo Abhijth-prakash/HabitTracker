@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from "../../api/axios";
 
 export const Adduser = createAsyncThunk(
     'user/add',
     async (userData, { rejectWithValue }) => {
         try {
-            const response = await axios.post('http://localhost:8888/user/registration', userData)
+            const response = await api.post('/user/registration', userData)
             return response.data
         } catch (error) {
             return rejectWithValue(
@@ -28,7 +28,8 @@ const userSlice = createSlice({
                 state.loading = true
             })
             .addCase(Adduser.fulfilled,(state,action)=>{
-                state.user = action.payload
+                state.user = action.payload.user
+                state.loading = false
             })
             .addCase(Adduser.rejected,(state,action)=>{
                 state.loading = false

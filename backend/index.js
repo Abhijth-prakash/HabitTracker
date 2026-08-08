@@ -5,26 +5,30 @@ const Habits = require('./models/HabitModel')
 const habitController = require('./controllers/Habitcontroller')
 const userController = require('./controllers/Usercontroller')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
+const verifyToken = require('./middilewares/auth')
 
 db.connect()
 
 app.use(express.json());
+app.use(cookieParser())
 
 app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: 'http://localhost:5173',
+    credentials: true  
 }))
 
 //habits
-app.get('/habits',habitController.getHabits)
-app.post('/habits',habitController.addHabits)
-app.delete('/habits/:id',habitController.deleteHabits)
-app.patch('/habits/:id',habitController.updateHabits)
+app.get('/habits',verifyToken,habitController.getHabits)
+app.post('/habits',verifyToken,habitController.addHabits)
+app.delete('/habits/:id',verifyToken,habitController.deleteHabits)
+app.patch('/habits/:id',verifyToken,habitController.updateHabits)
 
 
 //habitlogs
-app.post('/habits/logs',habitController.habitLogss)
-app.get('/habits/logs',habitController.todayHabits)
-app.get('/habits/weeklogs',habitController.weekHabits)
+app.post('/habits/logs',verifyToken,habitController.habitLogss)
+app.get('/habits/logs',verifyToken,habitController.todayHabits)
+app.get('/habits/weeklogs',verifyToken,habitController.weekHabits)
 
 //users
 app.post('/user/registration',userController.register)

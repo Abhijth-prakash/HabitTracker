@@ -19,8 +19,7 @@ const Register = () => {
   const dataHandle = async (data) => {
     const result = await dispatch(Adduser(data))
     if (!result.error) {
-      console.log('pass')
-      navigate('/user/login')
+      navigate('/home')
     }else{
 
     }

@@ -1,6 +1,7 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 
 const generateToken = (userId) => {
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
@@ -38,12 +39,19 @@ const register = async (req, res) => {
     const user = await newUser.save();
 
     const token = await generateToken(user._id);
+      res.cookie('token', token, {
+        httpOnly: true,                            
+        secure: process.env.NODE_ENV === 'production', 
+        sameSite: 'strict',                         
+        maxAge: 24 * 60 * 60 * 1000                 
+    })
+
 
     const userObj = user.toObject();
     delete userObj.password;
     return res
       .status(201)
-      .json({ message: "user created successfully", user: userObj, token });
+      .json({ message: "user created successfully", user: userObj });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "server error" });
