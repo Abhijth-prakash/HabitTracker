@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Edit from './pages/Edit'
 import Week from './pages/Week'
 import Register from './pages/Register'
+import Login from './pages/Login'
 
 function App() {
 
@@ -19,7 +20,8 @@ function App() {
         <Route path='/habit/weeklyreport' element={<Week></Week>}></Route>
 
 
-        <Route path='/' element={<Register></Register>}></Route>
+        <Route path='/user/register' element={<Register></Register>}></Route>
+        <Route path='/' element={<Login></Login>}></Route>
         
       </Routes>
     </div>
