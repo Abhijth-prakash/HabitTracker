@@ -14,12 +14,12 @@ function App() {
       <div className="pointer-events-none fixed bottom-[10%] right-[10%] w-[500px] h-[500px] bg-[#A855F7]/8 rounded-full blur-[140px]" />
 
       <Routes>
-        <Route path='/' element={<Home></Home>}></Route>
+        <Route path='/home' element={<Home></Home>}></Route>
         <Route path='/habit/:id' element={<Edit></Edit>}></Route>
         <Route path='/habit/weeklyreport' element={<Week></Week>}></Route>
 
 
-        <Route path='/user/registration' element={<Register></Register>}></Route>
+        <Route path='/' element={<Register></Register>}></Route>
         
       </Routes>
     </div>

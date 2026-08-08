@@ -102,7 +102,6 @@ const Home = () => {
           </div>
         </div>
 
-        <Link></Link>
       </div>
     </div>
   );
