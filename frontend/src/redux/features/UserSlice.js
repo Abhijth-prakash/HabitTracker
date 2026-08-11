@@ -15,6 +15,21 @@ export const Adduser = createAsyncThunk(
     }
 )
 
+export const Loginuser = createAsyncThunk(
+    'loginUser',
+    async (data,{rejectWithValue} )=>{
+        try{
+            const response = await api.post('/user/login',data)
+            return response.data
+
+        }catch(error){
+            return rejectWithValue(
+                error.response?.data || {message :"something went wrong"}
+            )
+        }
+    }
+)
+
 const userSlice = createSlice({
     name:"userSlice",
     initialState : {
@@ -32,6 +47,17 @@ const userSlice = createSlice({
                 state.loading = false
             })
             .addCase(Adduser.rejected,(state,action)=>{
+                state.loading = false
+                state.error = action.payload
+            })
+            .addCase(Loginuser.pending,(state,action)=>{
+                state.loading = true
+            })
+            .addCase(Loginuser.fulfilled,(state,action)=>{
+                state.user = action.payload.user
+                state.loading = false
+            })
+            .addCase(Loginuser.rejected,(state,action)=>{
                 state.loading = false
                 state.error = action.payload
             })

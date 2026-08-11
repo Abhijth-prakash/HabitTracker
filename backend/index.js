@@ -19,7 +19,7 @@ app.use(cors({
 }))
 
 //habits
-app.get('/habits',verifyToken,habitController.getHabits)
+app.get('/habits',habitController.getHabits)
 app.post('/habits',verifyToken,habitController.addHabits)
 app.delete('/habits/:id',verifyToken,habitController.deleteHabits)
 app.patch('/habits/:id',verifyToken,habitController.updateHabits)
