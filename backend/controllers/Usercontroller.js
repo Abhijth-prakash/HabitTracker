@@ -100,7 +100,7 @@ const login = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
+            secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
             maxAge: 24 * 60 * 60 * 1000,
         });
@@ -119,7 +119,43 @@ const login = async (req, res) => {
     }
 };
 
+
+//user logout
+const logout = async (req,res)=>{
+  try{
+
+     res.clearCookie('token', {
+    httpOnly: true,
+    secure:  process.env.NODE_ENV === "production",
+    sameSite: 'lax',  
+  })
+    return res.status(200).json({message:"user logout succesfully"})
+
+  }catch(error){
+    return res.status(500).json({message:"internal server errror"})
+  }
+}
+
+
+//user profile
+
+const profile = async (req,res)=>{
+  try{
+    const Id = req.userId;
+    const user = await User.findById(Id);
+    if(!user){
+      return res.status(400).json({message:"user not found"})
+    }
+    return  res.status(200).json({message:"user detail fetched",user:user})
+  }catch(error){
+    console.log(error)
+    return res.status(500).json({message:"server error"})
+  }
+}
+
 module.exports = {
   register,
   login,
+  logout,
+  profile
 };

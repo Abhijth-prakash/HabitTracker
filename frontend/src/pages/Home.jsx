@@ -7,10 +7,17 @@ import Schema from "../schema/HabitSchema";
 import TodayCard from "../components/TodayCard";
 import WeeklyCard from "../components/WeeklyCard";
 import { Link, useNavigate } from "react-router-dom";
+import { logoutUser, userProfile } from "../redux/features/UserSlice";
+import { useEffect } from "react";
 
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
+
+
+  useEffect(()=>{
+    dispatch(userProfile())
+  },[dispatch])
   const {user} = useSelector(state=> state.userData)
   const {
     register,
@@ -20,6 +27,8 @@ const Home = () => {
   } = useForm({
     resolver: zodResolver(Schema),
   });
+
+
 
   const dataHandle = async (data) => {
     try {
@@ -31,6 +40,15 @@ const Home = () => {
       console.log(error);
     }
   };
+
+  const handlingLgout = async () => {
+    try {
+      await dispatch(logoutUser()).unwrap()
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#09090F] py-10 sm:py-14 px-4 sm:px-6 lg:px-10 text-white relative z-10">
@@ -49,11 +67,28 @@ const Home = () => {
               Build consistency, track daily progress, and analyze weekly performance.
             </p>
           </div>
+
+          {/* User Info + Logout */}
+          <div className="flex items-center gap-3">
+            {user && (
+              <div className="hidden sm:flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-[#11111A] border border-white/[0.08]">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7C3AED] to-[#A855F7] flex items-center justify-center text-xs font-bold uppercase shrink-0">
+                  {user.name?.charAt(0)}
+                </div>
+                <span className="text-sm font-medium text-white/90 truncate max-w-[140px]">
+                  {user.name}
+                </span>
+              </div>
+            )}
+
+            <button
+              onClick={() => handlingLgout()}
+              className="h-11 px-5 rounded-xl font-semibold text-sm text-rose-400 bg-rose-500/10 border border-rose-500/20 cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 hover:bg-rose-500/20 hover:border-rose-500/30 hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
+            >
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
-        <div>
-          <h1>{user&& user.name}</h1>
-        </div>
-        <button onClick={()=> navigate('/')}>Logout</button>
 
         {/* Command Bar: Add Habit Form */}
         <form
