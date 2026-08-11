@@ -10,6 +10,8 @@ const generateToken = (userId) => {
   return token;
 };
 
+
+//registering user
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -19,7 +21,7 @@ const register = async (req, res) => {
     }
 
     const nameCheck = await User.findOne({ name });
-    const emailCheck = await User.findOne({ email });
+    const emailCheck = await User.findOne({ email });``
 
     if (nameCheck) {
       return res.status(400).json({ message: "name already exists" });
@@ -58,6 +60,18 @@ const register = async (req, res) => {
   }
 };
 
+
+const login = async(req,res)=>{
+  try{
+    const {email,password} = req.body
+    return res.status(200).json({message:"login succesfull"})
+  }catch(error){
+    console.log(error)
+    return res.status(500).json({message:"server error"})
+  }
+}
+
 module.exports = {
   register,
+  login
 };

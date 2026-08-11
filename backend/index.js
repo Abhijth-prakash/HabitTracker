@@ -32,6 +32,7 @@ app.get('/habits/weeklogs',verifyToken,habitController.weekHabits)
 
 //users
 app.post('/user/registration',userController.register)
+app.post('/user/login',userController.login)
 
 
 app.listen(8888, () => {
