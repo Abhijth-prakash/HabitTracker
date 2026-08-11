@@ -6,10 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Schema from "../schema/HabitSchema";
 import TodayCard from "../components/TodayCard";
 import WeeklyCard from "../components/WeeklyCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const {user} = useSelector(state=> state.userData)
   const {
     register,
@@ -52,6 +53,7 @@ const Home = () => {
         <div>
           <h1>{user&& user.name}</h1>
         </div>
+        <button onClick={()=> navigate('/')}>Logout</button>
 
         {/* Command Bar: Add Habit Form */}
         <form
