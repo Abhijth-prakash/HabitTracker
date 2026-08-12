@@ -1,224 +1,313 @@
 const Habits = require('../models/HabitModel')
 const HabitLog = require('../models/HabitLogs')
+const User = require('../models/UserModel')
 
-
-//getting data 
+//getting data
 const getHabits = async (req,res)=>{
-    try{   
-        const habits = await Habits.find()
-        return res.status(200).json({habits})
+try{
 
-    }catch(error){
-        return res.status(500).json({message:"server error"})
-    }
+const Id = req.userId;
+
+const habits = await Habits.find({
+    userId: Id
+})
+
+return res.status(200).json({habits})
+
+}catch(error){
+    return res.status(500).json({message:"server error"})
 }
+}
+
 
 //adding data
 const addHabits = async(req,res)=>{
-    try{
-        const {habit} = req.body
-        if(!habit){
-            return res.status(400).json({message:"habit is required"})
-        }
-        const newHabit = new Habits({
-            habit:habit
-        })  
-        await newHabit.save()
-        const habits = await Habits.find()
-        return res.status(201).json({message:"habit saved successfully",habits})
+try{
 
-    }catch(error){
-        console.log(error)
-        return res.status(500).json({message:"server error"})
-    }
+const Id = req.userId;
+
+const {habit} = req.body
+
+if(!habit){
+return res.status(400).json({message:"habit is required"})
+}
+
+const newHabit = new Habits({
+    habit: habit,
+    userId: Id
+})
+
+await newHabit.save()
+
+const habits = await Habits.find({
+    userId: Id
+})
+
+return res.status(201).json({
+    message:"habit saved successfully",
+    habits
+})
+
+}catch(error){
+    console.log(error)
+    return res.status(500).json({message:"server error"})
+}
 }
 
 
 //deleting habits
 const deleteHabits = async (req, res) => {
-    try {
-        const {id}  = req.params
-        if (!id) {
-            return res.status(404).json({ message: "habit not found" });
-        }
+try {
 
-        const deletedHabit = await Habits.findByIdAndDelete(id);
+const Id = req.userId;
 
-        if (!deletedHabit) {
-            return res.status(404).json({ message: "habit not found" });
-        }
+const {id} = req.params
 
-        const habits = await Habits.find()
-        return res.status(200).json({ message: "habit deleted",habits });
-
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "server error" });
-    }
+if (!id) {
+return res.status(404).json({ message: "habit not found" });
 }
 
+const deletedHabit = await Habits.findOneAndDelete({
+    _id: id,
+    userId: Id
+});
 
+if (!deletedHabit) {
+    return res.status(404).json({ message: "habit not found" });
+}
+
+const habits = await Habits.find({
+    userId: Id
+})
+
+return res.status(200).json({
+    message: "habit deleted",
+    habits
+});
+
+} catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "server error" });
+}
+}
 
 
 //updating habits
 const updateHabits = async (req, res) => {
-    try {
-        const {id}  = req.params
-        const {habit} = req.body
-        if (!id) {
-            return res.status(404).json({ message: "habit not found" });
-        }
-        if (!habit) {
-            return res.status(404).json({ message: "habit not found" });
-        }
+try {
 
-        const update = await Habits.findByIdAndUpdate(id,{$set:{habit:habit}})
-         if (!update) {
-            return res.status(404).json({ message: "habit not found" });
-        }
-        const habits = await Habits.find()
-        return res.status(200).json({message:"update completed",habits})
+const Id = req.userId;
 
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "server error" });
+const {id} = req.params
+const {habit} = req.body
+
+if (!id) {
+return res.status(404).json({ message: "habit not found" });
+}
+
+if (!habit) {
+return res.status(404).json({ message: "habit not found" });
+}
+
+const update = await Habits.findOneAndUpdate(
+    {
+        _id: id,
+        userId: Id
+    },
+    {
+        $set:{habit:habit}
     }
+)
+
+if (!update) {
+    return res.status(404).json({ message: "habit not found" });
+}
+
+const habits = await Habits.find({
+    userId: Id
+})
+
+return res.status(200).json({
+    message:"update completed",
+    habits
+})
+
+} catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "server error" });
+}
 }
 
 
 //habitlogs
 
 const habitLogss = async (req, res) => {
-    try {
-        const { habitId } = req.body;
+try {
 
-        const today = new Date().toISOString().split("T")[0];
+const Id = req.userId;
 
-        const existing = await HabitLog.findOne({
-  habitId,
-  date: today,
+const { habitId } = req.body;
+
+const today = new Date().toISOString().split("T")[0];
+
+
+//check whether the habit belongs to this user
+const habit = await Habits.findOne({
+    _id: habitId,
+    userId: Id
+})
+
+if (!habit) {
+    return res.status(404).json({
+        message: "habit not found"
+    })
+}
+
+
+const existing = await HabitLog.findOne({
+    habitId,
+    userId: Id,
+    date: today,
 });
 
 if (existing) {
-  return res.json({ message: "Already completed today" });
+return res.json({ message: "Already completed today" });
 }
 
-        const log = await HabitLog.create({
-            habitId,
-            date: today,
-            completed: true
-        });
+const log = await HabitLog.create({
+    habitId,
+    userId: Id,
+    date: today,
+    completed: true
+});
 
-        return res.status(201).json(log);
+return res.status(201).json(log);
 
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Internal server error" });
-    }
+} catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+}
 };
 
 
 //getting logs for today
 
 const todayHabits = async (req, res) => {
-  try {
-    const habits = await Habits.find();
-    const today = new Date().toISOString().split("T")[0];
+try {
 
-    const todayLogs = await HabitLog.find({
-      date: today,
-    });
+const Id = req.userId;
 
-    const result = [];
+const habits = await Habits.find({
+    userId: Id
+});
 
-    for (let i = 0; i < habits.length; i++) {
-      let completed = false;
+const today = new Date().toISOString().split("T")[0];
 
-      for (let j = 0; j < todayLogs.length; j++) {
-        if (habits[i]._id.toString() === todayLogs[j].habitId.toString()) {
-          completed = true;
-          break;
-        }
-      }
+const todayLogs = await HabitLog.find({
+    userId: Id,
+    date: today,
+});
 
-      result.push({
-        ...habits[i].toObject(),
-        completed: completed,
-      });
+const result = [];
+
+for (let i = 0; i < habits.length; i++) {
+  let completed = false;
+
+  for (let j = 0; j < todayLogs.length; j++) {
+    if (habits[i]._id.toString() === todayLogs[j].habitId.toString()) {
+      completed = true;
+      break;
     }
-    return res.status(200).json({ message: "success", result });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "internal server error" });
   }
-}; 
+
+  result.push({
+    ...habits[i].toObject(),
+    completed: completed,
+  });
+}
+
+return res.status(200).json({
+    message: "success",
+    result
+});
+
+} catch (error) {
+console.log(error);
+return res.status(500).json({ message: "internal server error" });
+}
+};
 
 
 const weekHabits = async (req, res) => {
-  try {
-    const today = new Date();
+try {
 
-    const dates = [];
+const Id = req.userId;
 
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(today.getDate() - i);
+const today = new Date();
 
-      dates.push(date.toISOString().split("T")[0]);
-    }
+const dates = [];
 
-    const habits = await Habits.find();
+for (let i = 6; i >= 0; i--) {
+  const date = new Date(today);
+  date.setDate(today.getDate() - i);
 
-    const logs = await HabitLog.find({
-      date: { $in: dates }
-    });
+  dates.push(date.toISOString().split("T")[0]);
+}
 
-    // Create lookup
-    const logMap = {};
+const habits = await Habits.find({
+    userId: Id
+});
 
-    logs.forEach((log) => {
-      const key = `${log.habitId}_${log.date}`;
-      logMap[key] = log.completed;
-    });
+const logs = await HabitLog.find({
+  userId: Id,
+  date: { $in: dates }
+});
 
-    const weeklyReport = habits.map((habit) => {
+// Create lookup
+const logMap = {};
 
-      const week = dates.map((date) => {
-        const key = `${habit._id}_${date}`;
+logs.forEach((log) => {
+  const key = `${log.habitId}_${log.date}`;
+  logMap[key] = log.completed;
+});
 
-        return logMap[key] || false;
-      });
+const weeklyReport = habits.map((habit) => {
 
-      const completed = week.filter(Boolean).length;
+  const week = dates.map((date) => {
+    const key = `${habit._id}_${date}`;
 
-      return {
-        habitId: habit._id,
-        habit: habit.habit,
-        week,
-        percentage: Math.round((completed / 7) * 100)
-      };
-    });
+    return logMap[key] || false;
+  });
 
-    return res.json({
-      dates,
-      weeklyReport
-    });
+  const completed = week.filter(Boolean).length;
 
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
+  return {
+    habitId: habit._id,
+    habit: habit.habit,
+    week,
+    percentage: Math.round((completed / 7) * 100)
+  };
+});
+
+return res.json({
+  dates,
+  weeklyReport
+});
+
+} catch (err) {
+console.log(err);
+return res.status(500).json({ message: "Internal Server Error" });
+}
 };
 
 
 
 module.exports={
-    getHabits,
-    addHabits,
-    deleteHabits,
-    updateHabits,
-    habitLogss,
-    todayHabits,
-    weekHabits
-    
+getHabits,
+addHabits,
+deleteHabits,
+updateHabits,
+habitLogss,
+todayHabits,
+weekHabits
 }
