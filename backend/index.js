@@ -37,6 +37,6 @@ app.post('/user/login',userController.login)
 app.post('/user/logout',verifyToken,userController.logout)
 app.get('/user/profile',verifyToken,userController.profile)
 
-app.listen(8888, () => {
-    console.log('Server is running on http://localhost:8888')
-})
+app.listen(process.env.PORT || 8888, () => {
+    console.log("Server running");
+});
