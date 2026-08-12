@@ -68,7 +68,7 @@ const Home = () => {
             </p>
           </div>
 
-          {/* User Info + Logout */}
+          {/* User Info + Search + Logout */}
           <div className="flex items-center gap-3">
             {user && (
               <div className="hidden sm:flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-[#11111A] border border-white/[0.08]">
@@ -80,8 +80,6 @@ const Home = () => {
                 </span>
               </div>
             )}
-
-            <input type="text" placeholder="search" value={input} onChange={(e)=> setInput(e.target.value)}/>
 
             <button
               onClick={() => handlingLgout()}
@@ -127,6 +125,27 @@ const Home = () => {
         {/* 12-Column Dashboard Grid: 7 Cols (Habits List) | 5 Cols (Analytics Sidebar) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           <div className="lg:col-span-7 space-y-5">
+            <div className="glass-card p-4 sm:p-5 border border-white/[0.08] rounded-2xl">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-sm font-semibold text-white/80 tracking-wide uppercase">
+                  Your Habits
+                </h2>
+              </div>
+
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#A1A1AA]/60 text-base pointer-events-none">
+                  🔍
+                </span>
+                <input
+                  type="text"
+                  placeholder="Search your habits..."
+                  value={input}
+                  onChange={(e)=> setInput(e.target.value)}
+                  className="w-full h-12 bg-[#11111A] border border-white/[0.1] rounded-xl pl-11 pr-4 text-sm text-white placeholder-[#A1A1AA]/50 focus:outline-none focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/30 transition-all duration-200 hover:border-white/[0.18]"
+                />
+              </div>
+            </div>
+
             <HabitCard input={input} />
 
             <Link
