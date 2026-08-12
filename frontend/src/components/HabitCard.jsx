@@ -9,7 +9,7 @@ import {
 import DeleteCard from "./DeleteCard";
 import { Link } from "react-router-dom";
 
-const HabitCard = () => {
+const HabitCard = ({input}) => {
   const dispatch = useDispatch();
 
   const [remove, setRemove] = useState(false);
@@ -66,7 +66,9 @@ const HabitCard = () => {
       </div>
 
       <ol className="space-y-3">
-        {habits.map((item) => (
+        {habits
+         .filter(item => item.habit.toLowerCase().includes(input.toLowerCase()))
+        .map((item) => (
           <li
             key={item._id}
             className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-[#7C3AED]/30 rounded-2xl p-4 sm:px-5 sm:py-3.5 min-h-[64px] transition-all duration-300 shadow-sm hover:shadow-[0_0_20px_rgba(124,58,237,0.15)] group"

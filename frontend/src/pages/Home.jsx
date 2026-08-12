@@ -8,7 +8,7 @@ import TodayCard from "../components/TodayCard";
 import WeeklyCard from "../components/WeeklyCard";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser, userProfile } from "../redux/features/UserSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Home = () => {
     resolver: zodResolver(Schema),
   });
 
-
+  const [input,setInput] = useState("")
 
   const dataHandle = async (data) => {
     try {
@@ -81,6 +81,8 @@ const Home = () => {
               </div>
             )}
 
+            <input type="text" placeholder="search" value={input} onChange={(e)=> setInput(e.target.value)}/>
+
             <button
               onClick={() => handlingLgout()}
               className="h-11 px-5 rounded-xl font-semibold text-sm text-rose-400 bg-rose-500/10 border border-rose-500/20 cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 hover:bg-rose-500/20 hover:border-rose-500/30 hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
@@ -125,7 +127,7 @@ const Home = () => {
         {/* 12-Column Dashboard Grid: 7 Cols (Habits List) | 5 Cols (Analytics Sidebar) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           <div className="lg:col-span-7 space-y-5">
-            <HabitCard />
+            <HabitCard input={input} />
 
             <Link
               to="/habit/weeklyreport"
