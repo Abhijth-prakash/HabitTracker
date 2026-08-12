@@ -18,7 +18,7 @@ const Week = () => {
         {/* Navigation & Header */}
         <div className="flex items-center justify-between">
           <Link
-            to="/homr"
+            to="/home"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-[#A1A1AA] hover:text-white text-sm font-medium transition cursor-pointer"
           >
             <span>← Back to Dashboard</span>
