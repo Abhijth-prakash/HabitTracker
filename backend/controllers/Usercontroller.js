@@ -105,6 +105,7 @@ const login = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
+        console.log('login succesfull',token)
         return res.status(200).json({
             message: "Login successful",
             user: emailCheck,
